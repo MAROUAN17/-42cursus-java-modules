@@ -3,29 +3,33 @@
 import java.util.Arrays;
 import java.util.Scanner;
 public class Program {
-    void checkPrime(int num) {
-        int steps = 0;
+    int calculateSumDigits(int num) {
+        int sum = 0;
+        while(num > 0) {
+            sum += (num % 10);
+            num /= 10;
+        }
+        return sum;
+    }
+    boolean checkPrime(int num) {
+        boolean prime = true;
         for(int i = 2; i <= Math.sqrt(num); i++) {
-            steps++;
             if (num % i == 0) {
-                System.out.println("false " + steps);
-                return ;
+                prime = false;
+                break;
             }
         }
-        steps++;
-        System.out.println("true " + steps);
+        return prime;
     }
     public static void main(String[] args) {
         Program m = new Program();
         Scanner sc = new Scanner(System.in);
         int num = sc.nextInt(), counter = 0;
-        while(true) {
-            if (num <= 0 || num == 1) {
-                System.out.println("IllegalArgument");
-                System.exit(-1);
-            }
-            m.checkPrime(num);
+        while(num != 42) {
+            int sum = m.calculateSumDigits(num);
+            if (m.checkPrime(sum)) counter++;
             num = sc.nextInt();
         }
+        System.out.println("Count of coffee-request : " + counter);
     }
 }
