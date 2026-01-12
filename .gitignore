@@ -33,3 +33,5 @@ bin/
 *.xml
 *.iml
 */*.xml
+
+*.class
