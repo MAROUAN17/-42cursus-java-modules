@@ -30,7 +30,7 @@ public class TransactionsLinkedList implements TransactionsList {
             else {
                 while (curr.next.data.getID() != id)
                     curr = curr.next;
-                if (curr.data.getID() != id) throw new TransactionNotFoundException("ID NOT FOUND");
+                if (curr.next != null && curr.next.data.getID() != id) throw new TransactionNotFoundException("ID NOT FOUND");
                 curr.next = curr.next.next;
             }
         }

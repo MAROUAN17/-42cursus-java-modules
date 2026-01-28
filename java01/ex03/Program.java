@@ -21,7 +21,7 @@ public class Program {
         }
 
         try {
-            trs.removeTransaction(arr[2].getID());            
+            trs.removeTransaction(arr[100].getID());
         } catch (Exception e) {
             System.err.println("NOT FOUND ID");
         }
