@@ -7,6 +7,9 @@ public class UsersArrayList implements UsersList {
     }
 
     //methods
+    public User[] getUsers() {
+        return userData;
+    }
     public void addUser(User user) {
         if (getNbrUsers() == size) {
             size += size / 2;
@@ -23,8 +26,8 @@ public class UsersArrayList implements UsersList {
     }
     public User getUserByID(Integer id) throws UserNotFoundException {
         for(int i = 0; i < userData.length; i++) {
-            if (userData[i].getId() == id) {
-                return userData[i]; 
+            if (userData[i] != null && userData[i].getID() == id) {
+                return userData[i];
             }
         }
         throw new UserNotFoundException("Error: USER NOT FOUND");

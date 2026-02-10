@@ -1,8 +1,8 @@
 public class Program {
     public static void main(String[] args) {
         TransactionsLinkedList trs = new TransactionsLinkedList();
-        User jeff = new User("JEFF");
-        User adam = new User("ADAM");
+        User jeff = new User("JEFF", 500);
+        User adam = new User("ADAM", 500);
         
         Transaction tr = new Transaction(jeff, adam, TransferCategory.CREDITS, 200);
         Transaction tr2 = new Transaction(adam, jeff, TransferCategory.DEBITS, -200);

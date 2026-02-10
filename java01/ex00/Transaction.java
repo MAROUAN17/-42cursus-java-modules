@@ -12,7 +12,7 @@ public class Transaction {
     private TransferCategory transferCategory;
     private Integer amount;
 
-    Transaction(User sender, User recipient, TransferCategory transferCategory, Integer amount) {
+    Transaction(UUID id, User sender, User recipient, TransferCategory transferCategory, Integer amount) {
         if (transferCategory == TransferCategory.DEBITS && amount > 0) {
             throw new IllegalArgumentException("Debit amount should be negative");
         }
@@ -20,11 +20,15 @@ public class Transaction {
             throw new IllegalArgumentException("Credit amount should be positive");
         }
 
-        this.id = UUID.randomUUID();
+        this.id = id;
         this.sender = sender;
         this.recipient = recipient; 
         this.transferCategory = transferCategory; 
         this.amount = amount;
+    }
+
+    public UUID getID() {
+        return id;
     }
 
     public Integer getAmount() {

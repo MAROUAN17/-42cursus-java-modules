@@ -23,7 +23,7 @@ public class UsersArrayList implements UsersList {
     }
     public User getUserByID(Integer id) throws UserNotFoundException {
         for(int i = 0; i < userData.length; i++) {
-            if (userData[i].getId() == id) {
+            if (userData[i].getID() == id) {
                 return userData[i]; 
             }
         }
