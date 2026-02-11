@@ -50,8 +50,10 @@ public class TransactionsService {
     public void unpairTransactions() {
         Integer id = 0;
         User[] users = usrList.getUsers();
-        while (users[id] != null) {
-            Transaction[] ts = users[id].getTransactions().toArray();
+        for (User u: users) {
+            if (u == null) return;
+
+            Transaction[] ts = u.getTransactions().toArray();
             if (ts == null) {
                 System.err.println("No transactions for this user");
                 return ;
@@ -62,17 +64,20 @@ public class TransactionsService {
                 if (o == null)
                     return;
 
-                if(isUnpaired(o, t.getID()))
+                if(isUnpaired(o, t))
                     unpairedTransactions.addTransaction(t);
             }
             id++;
         }
     }
-    public Boolean isUnpaired(User usr, UUID trId) {
+    public Boolean isUnpaired(User usr, Transaction toFind) {
         Transaction[] trs = usr.getTransactions().toArray();
 
         for(Transaction t: trs) {
-            if (t.getID() == trId) return false;
+            if (t.getID() == toFind.getID()
+                && toFind.getTransferCategory() != t.getTransferCategory()) {
+                    return false;
+            };
         }
         return true;
     }

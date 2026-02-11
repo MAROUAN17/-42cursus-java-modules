@@ -15,6 +15,7 @@ public class TransactionsService {
         return usrList.getUserByID(id).getBalance();
     }
     public Transaction[] getUnpairedTransactions() {
+        unpairTransactions();
         return unpairedTransactions.toArray();
     }
     public void transferTransaction(Integer usr1Id, Integer usr2Id, Integer amount) throws IllegalTransactionException {
@@ -33,6 +34,8 @@ public class TransactionsService {
         usr2.getTransactions().addTransaction(tr1);
         usr2.getTransactions().addTransaction(tr2);
 
+        usr1.getTransactions().removeTransaction(tr1.getID());
+
         usr1.setBalance(usr1.getBalance() - amount);
         usr2.setBalance(usr2.getBalance() + amount);
     }
@@ -43,28 +46,36 @@ public class TransactionsService {
         User usr = usrList.getUserByID(usrId);
         usr.getTransactions().removeTransaction(tranId);
     }
-    public void unpairTransactions(Integer usrID, UUID transactionID) {
-        Transaction t = usrList.getUserByID(usrID).getTransactions().get(transactionID);
-        if (t == null) {
-            System.err.println("Transaction not found");
-            return ;
+    public void unpairTransactions() {
+        Integer id = 0;
+        User[] users = usrList.getUsers();
+        for (User u: users) {
+            if (u == null) return;
+            Transaction[] ts = u.getTransactions().toArray();
+            if (ts == null) {
+                System.err.println("No transactions for this user");
+                return ;
+            }
+
+            for(Transaction t: ts) {
+                User o = t.getSender().getID().equals(id) ? t.getRecipient() : t.getSender();
+                if(o == null)
+                    return;
+
+                if(isUnpaired(o, t))
+                    unpairedTransactions.addTransaction(t);
+            }
+            id++;
         }
-
-        User o = t.getSender().getID() == usrID ? t.getRecipient() : t.getSender();
-        if (o == null)
-            return;
-
-        if(isUnpaired(o, transactionID))
-            unpairedTransactions.removeTransaction(transactionID);
-        else
-            unpairedTransactions.addTransaction(o.getTransactions().get(transactionID));
     }
-    public Boolean isUnpaired(User usr, UUID trId) {
+    public Boolean isUnpaired(User usr, Transaction toFind) {
         Transaction[] trs = usr.getTransactions().toArray();
 
-        
         for(Transaction t: trs) {
-            if (t.getID() == trId) return false;
+            if (t.getID() == toFind.getID()
+                && toFind.getTransferCategory() != t.getTransferCategory()) {
+                    return false;
+            };
         }
         return true;
     }

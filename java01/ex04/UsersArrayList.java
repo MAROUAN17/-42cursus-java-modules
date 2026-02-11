@@ -7,6 +7,9 @@ public class UsersArrayList implements UsersList {
     }
 
     //methods
+    public User[] getUsers() {
+        return userData;
+    }
     public void addUser(User user) {
         if (getNbrUsers() == size) {
             size += size / 2;
